@@ -31,8 +31,8 @@ billing\_system/
 1. **Clone the repository**
 
 ```
-git clone <repository_url>
-cd billing_system
+git clone https://github.com/Rakeshlalkn/billing-system.git
+cd billing-system
 ```
 
 2. **Build Docker containers**
@@ -56,7 +56,6 @@ docker-compose exec web python manage.py makemigrations
 docker-compose exec web python manage.py migrate
 ```
 
-> Note: If you encounter errors like `value too long for type character varying(20)`, ensure the database schema matches the models (`Product.name` max\_length=100).
 
 5. **Create a superuser (optional)**
 
