@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Create Bill{% endblock %}
+{% block content %}
+<h2>Create New Bill</h2>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label>Customer Email</label>
+    <input type="email" name="customer_email" class="form-control" required>
+  </div>
+
+  <h4>Products</h4>
+  <div id="product-list">
+    <div class="row mb-3 product-row">
+      <div class="col-md-6">
+        <label>Product</label>
+        <select name="product_id[]" class="form-select">
+          {% for product in products %}
+            <option value="{{ product.id }}">{{ product.name }} — (₹{{ product.price }}) — stock: {{ product.available_stock }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label>Quantity</label>
+        <input type="number" name="quantity[]" class="form-control" value="1" min="1">
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="btn btn-secondary mb-3" onclick="addProduct()">+ Add Another Product</button>
+
+  <hr>
+  <h4>Denominations (Current till counts)</h4>
+  <div class="row">
+    {% for denom in denominations %}
+      <div class="col-auto mb-2">
+        <label>₹{{ denom.value }}</label>
+        <input type="number" min="0" name="denom_{{ denom.value }}" class="form-control" style="width:90px">
+      </div>
+    {% endfor %}
+  </div>
+
+  <hr>
+  <button type="submit" class="btn btn-primary">Generate Bill</button>
+</form>
+
+<script>
+function addProduct() {
+  const productList = document.getElementById("product-list");
+  const newRow = document.createElement("div");
+  newRow.className = "row mb-3 product-row";
+  newRow.innerHTML = `
+    <div class="col-md-6">
+      <label>Product</label>
+      <select name="product_id[]" class="form-select">
+        {% for product in products %}
+          <option value="{{ product.id }}">{{ product.name }} — {{ product.product_id }} (₹{{ product.price }}) — stock: {{ product.available_stock }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label>Quantity</label>
+      <input type="number" name="quantity[]" class="form-control" value="1" min="1">
+    </div>
+  `;
+  productList.appendChild(newRow);
+}
+</script>
+{% endblock %}

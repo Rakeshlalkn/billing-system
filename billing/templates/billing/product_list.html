@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<h2>Products</h2>
+<a href="{% url 'product_add' %}" class="btn btn-primary mb-3">Add Product</a>
+<table class="table table-striped">
+  <thead><tr><th>SKU</th><th>Name</th><th>Price</th><th>Tax%</th><th>Stock</th></tr></thead>
+  <tbody>
+    {% for p in products %}
+      <tr>
+        <td>{{ p.product_id }}</td>
+        <td>{{ p.name }}</td>
+        <td>₹{{ p.price }}</td>
+        <td>{{ p.tax_percentage }}</td>
+        <td>{{ p.available_stock }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5">No products yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

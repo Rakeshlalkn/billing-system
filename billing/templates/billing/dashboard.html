@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Dashboard</h1>
+<div class="row">
+  <div class="col-md-3">
+    <div class="card text-white bg-primary mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Create Bill</h5>
+        <p class="card-text">Generate a new invoice</p>
+        <a href="{% url 'billing_page' %}" class="btn btn-light btn-sm">Go</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-success mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Products</h5>
+        <p class="card-text">Manage your product catalog</p>
+        <a href="{% url 'product_list' %}" class="btn btn-light btn-sm">View</a>
+        <a href="{% url 'product_add' %}" class="btn btn-light btn-sm">Add</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-info mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Bill History</h5>
+        <p class="card-text">See past invoices</p>
+        <a href="{% url 'bill_history' %}" class="btn btn-light btn-sm">View</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-warning mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Profile</h5>
+        <p class="card-text">Manage your account</p>
+        <a href="#" class="btn btn-light btn-sm disabled">Coming Soon</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
