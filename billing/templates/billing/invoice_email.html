@@ -1,3 +1,4 @@
+<!-- billing/invoice_email.html -->
 <html>
   <body>
     <h2>Invoice #{{ purchase.id }}</h2>
@@ -7,16 +8,26 @@
     <table border="1" cellpadding="6" cellspacing="0">
       <thead>
         <tr>
-          <th>Product</th><th>Qty</th><th>Unit</th><th>Tax%</th><th>Line Total</th>
+          <th>Product ID</th>
+          <th>Product Name</th>
+          <th>Unit Price</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
+          <th>Tax%</th>
+          <th>Tax Amount</th>
+          <th>Line Total</th>
         </tr>
       </thead>
       <tbody>
         {% for item in purchase.items.all %}
         <tr>
+          <td>{{ item.product.product_id }}</td>
           <td>{{ item.product.name }}</td>
-          <td>{{ item.quantity }}</td>
           <td>{{ item.unit_price }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.line_subtotal }}</td>
           <td>{{ item.tax_percentage }}</td>
+          <td>{{ item.line_tax_amount }}</td>
           <td>{{ item.line_total }}</td>
         </tr>
         {% endfor %}
@@ -24,10 +35,19 @@
     </table>
 
     <p><strong>Subtotal:</strong> ₹{{ purchase.subtotal }}</p>
-    <p><strong>Tax:</strong> ₹{{ purchase.tax_total }}</p>
-    <p><strong>Total:</strong> ₹{{ purchase.total }}</p>
-    <p><strong>Paid:</strong> ₹{{ purchase.paid_amount }}</p>
+    <p><strong>Tax Total:</strong> ₹{{ purchase.tax_total }}</p>
+    <p><strong>Grand Total:</strong> ₹{{ purchase.total }}</p>
+    <p><strong>Paid Amount:</strong> ₹{{ purchase.paid_amount }}</p>
     <p><strong>Balance:</strong> ₹{{ purchase.balance }}</p>
+
+    {% if purchase.balance > 0 %}
+    <h4>Balance Denominations:</h4>
+    <ul>
+      {% for c in purchase.change_denominations.all %}
+      <li>₹{{ c.denomination_value }} x {{ c.count_given }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
 
     <p>Regards,<br/>Your Shop</p>
   </body>

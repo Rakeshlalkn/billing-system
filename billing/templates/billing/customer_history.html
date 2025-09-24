@@ -1,0 +1,33 @@
+<!-- billing/customer_history.html -->
+{% extends "base.html" %}
+{% block title %}Customer Purchase History{% endblock %}
+{% block content %}
+<h2>Customer Purchase History</h2>
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label>Customer Email</label>
+    <input type="email" name="customer_email" value="{{ email|default:'' }}" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+{% if purchases %}
+<table class="table table-striped mt-3">
+  <thead>
+    <tr><th>ID</th><th>Date</th><th>Total</th><th>View</th></tr>
+  </thead>
+  <tbody>
+    {% for p in purchases %}
+      <tr>
+        <td>{{ p.id }}</td>
+        <td>{{ p.created_at|date:"Y-m-d H:i" }}</td>
+        <td>₹{{ p.total }}</td>
+        <td><a href="{% url 'invoice_page' p.id %}" class="btn btn-sm btn-primary">View</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% elif email %}
+<p>No purchases found for {{ email }}.</p>
+{% endif %}
+{% endblock %}

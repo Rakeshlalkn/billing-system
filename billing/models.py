@@ -1,6 +1,8 @@
+# models.py
 import uuid
 from django.db import models
 from django.utils import timezone
+from decimal import Decimal
 
 def gen_product_id():
     return uuid.uuid4().hex[:8].upper()
@@ -38,8 +40,16 @@ class PurchaseItem(models.Model):
     def __str__(self):
         return f"{self.product.name} x {self.quantity}"
 
+    @property
+    def line_subtotal(self):
+        return self.unit_price * Decimal(self.quantity)
+
+    @property
+    def line_tax_amount(self):
+        return (self.line_subtotal * (self.tax_percentage / Decimal(100))).quantize(Decimal('0.01'), rounding='ROUND_HALF_UP')
+
 class Denomination(models.Model):
-    value = models.PositiveIntegerField(unique=True)  # e.g., 2000, 500, 100...
+    value = models.PositiveIntegerField(unique=True)
     count_available = models.PositiveIntegerField(default=0)
 
     class Meta:

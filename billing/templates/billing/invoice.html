@@ -1,3 +1,4 @@
+<!-- billing/invoice.html -->
 {% extends "base.html" %}
 {% block title %}Invoice #{{ purchase.id }}{% endblock %}
 {% block content %}
@@ -6,14 +7,28 @@
 <p><strong>Date:</strong> {{ purchase.created_at }}</p>
 
 <table class="table table-bordered mt-3">
-  <thead><tr><th>Product</th><th>Qty</th><th>Unit</th><th>Tax%</th><th>Line Total</th></tr></thead>
+  <thead>
+    <tr>
+      <th>Product ID</th>
+      <th>Product Name</th>
+      <th>Unit Price</th>
+      <th>Quantity</th>
+      <th>Subtotal</th>
+      <th>Tax %</th>
+      <th>Tax Amount</th>
+      <th>Line Total</th>
+    </tr>
+  </thead>
   <tbody>
     {% for item in purchase.items.all %}
       <tr>
-        <td>{{ item.product.name }} ({{ item.product.product_id }})</td>
-        <td>{{ item.quantity }}</td>
+        <td>{{ item.product.product_id }}</td>
+        <td>{{ item.product.name }}</td>
         <td>₹{{ item.unit_price }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>₹{{ item.line_subtotal }}</td>
         <td>{{ item.tax_percentage }}</td>
+        <td>₹{{ item.line_tax_amount }}</td>
         <td>₹{{ item.line_total }}</td>
       </tr>
     {% endfor %}
@@ -24,14 +39,14 @@
   <p><strong>Subtotal:</strong> ₹{{ purchase.subtotal }}</p>
   <p><strong>Tax:</strong> ₹{{ purchase.tax_total }}</p>
   <p><strong>Total:</strong> ₹{{ purchase.total }}</p>
-  <p><strong>Paid (assumed):</strong> ₹{{ purchase.paid_amount }}</p>
+  <p><strong>Paid:</strong> ₹{{ purchase.paid_amount }}</p>
   <p><strong>Balance:</strong> ₹{{ purchase.balance }}</p>
 </div>
 
-{% if change_list %}
+{% if purchase.change_denominations.all %}
 <h4>Change given</h4>
 <ul>
-  {% for c in change_list %}
+  {% for c in purchase.change_denominations.all %}
     <li>₹{{ c.denomination_value }} x {{ c.count_given }}</li>
   {% endfor %}
 </ul>

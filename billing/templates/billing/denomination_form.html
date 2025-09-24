@@ -1,0 +1,19 @@
+<!-- billing/denomination_form.html -->
+{% extends "base.html" %}
+{% block title %}Add Denomination{% endblock %}
+{% block content %}
+<h2>Add / Edit Denomination</h2>
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label>Value (e.g., 500)</label>
+    <input type="number" min="1" name="value" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>Available Count</label>
+    <input type="number" min="0" name="count" class="form-control" value="0" required>
+  </div>
+  <button class="btn btn-success" type="submit">Save</button>
+</form>
+<p>Note: If value exists, count will be updated.</p>
+{% endblock %}

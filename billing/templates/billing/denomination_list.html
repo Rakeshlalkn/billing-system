@@ -1,0 +1,20 @@
+<!-- billing/denomination_list.html -->
+{% extends "base.html" %}
+{% block title %}Denominations{% endblock %}
+{% block content %}
+<h2>Denominations</h2>
+<a href="{% url 'denomination_add' %}" class="btn btn-primary mb-3">Add Denomination</a>
+<table class="table table-striped">
+  <thead><tr><th>Value</th><th>Available Count</th></tr></thead>
+  <tbody>
+    {% for d in denoms %}
+      <tr>
+        <td>₹{{ d.value }}</td>
+        <td>{{ d.count_available }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="2">No denominations yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
